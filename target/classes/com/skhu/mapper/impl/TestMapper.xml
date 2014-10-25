@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.skhu.mapper.TestMapper">
+	<select id="getTests" resultType="com.skhu.model.JavaBean">
+		select *
+		from test_db;
+	</select>
+	
+	<insert id="insertTest" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+		insert into test_db (name, content)
+		values (#{name}, #{content})
+	</insert>
+	
+	<delete id="deleteTest">
+		delete from test_db
+		where id = #{id}
+	</delete>
+</mapper>

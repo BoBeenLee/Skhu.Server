@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.skhu.mapper.AlarmMapper">
+	<insert id="insertAlarm" useGeneratedKeys="true" keyProperty="alarmNo" keyColumn="alarm_no" parameterType="com.skhu.model.Alarm">
+		insert into sk_alaram_db (mac, cate_no, src_no, filter)
+		values (#{mac}, #{cateNo}, #{srcNo}, #{filter})
+	</insert>
+
+	<update id="updateAlarm" parameterType="com.skhu.model.Alarm">
+		update sk_alaram_db
+		set mac = #{mac}, 
+			cate_no = #{cateNo}, 
+			src_no = #{srcNo}, 
+			filter = #{filter}
+		where alarm_no = #{alarmNo} 
+	</update>
+
+	<delete id="deleteAlarm">
+		delete from sk_alaram_db
+		where alarm_no = #{alarmNo} 
+	</delete>
+	
+	<select id="getAlarm" resultType="com.skhu.model.Alarm">
+		select alarm_no alarmNo, al.mac mac, token_id tokenId, push_yn pushYn, al.cate_no cateNo, cd.name cateNm, src_no srcNo, filter, al.created created
+		from sk_alaram_db al join sk_gcm_db gc
+		on al.mac = gc.mac
+		join sk_category_db cd
+		on al.cate_no = cd.cate_no
+		where al.mac = #{mac} and al.cate_no = #{cateNo}
+		<if test="srcNo != null">
+		 	and al.src_no = #{srcNo}
+		</if>
+		<if test="filter != null">
+		  	and al.filter = #{filter}
+		</if>
+	</select>
+	
+	<select id="getAlarms" resultType="com.skhu.model.Alarm">
+		select alarm_no alarmNo, al.mac mac, token_id tokenId, push_yn pushYn, al.cate_no cateNo, cd.name cateNm, src_no srcNo, filter, al.created created
+		from sk_alaram_db al join sk_gcm_db gc
+		on al.mac = gc.mac
+		join sk_category_db cd
+		on al.cate_no = cd.cate_no
+		where al.mac = #{mac}
+	</select>
+	
+	<select id="findFilters" resultType="com.skhu.model.Alarm">
+		select alarm_no alarmNo, al.mac mac, token_id tokenId, push_yn pushYn, cate_no cateNo, src_no srcNo, filter, al.created created
+		from sk_alaram_db al join sk_gcm_db gc
+		on al.mac = gc.mac
+		where #{filter} like concat('%', filter, '%') and cate_no = #{cateNo}
+	</select>
+	
+	<select id="findSrcFilters" resultType="com.skhu.model.Alarm">
+		select alarm_no alarmNo, al.mac mac, token_id tokenId, push_yn pushYn, cate_no cateNo, src_no srcNo, filter, al.created created
+		from sk_alaram_db al join sk_gcm_db gc
+		on al.mac = gc.mac
+		where src_no = #{srcNo} and cate_no = #{cateNo}
+	</select>
+	
+	<select id="getAllAlarms" resultType="com.skhu.model.Alarm">
+		select alarm_no alarmNo, al.mac mac, token_id tokenId, push_yn pushYn, cate_no cateNo, src_no srcNo, filter, al.created created
+		from sk_alaram_db al join sk_gcm_db gc
+		on al.mac = gc.mac
+	</select>
+</mapper>

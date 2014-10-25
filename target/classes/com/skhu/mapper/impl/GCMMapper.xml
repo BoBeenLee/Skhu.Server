@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.skhu.mapper.GCMMapper">
+	<insert id="insertGcm" useGeneratedKeys="true" keyProperty="gcmNo" keyColumn="gcm_no" parameterType="com.skhu.model.Gcm">
+		insert into sk_gcm_db (mac, token_id, push_yn)
+		values (#{mac}, #{tokenId}, #{pushYn})
+	</insert>
+
+	<update id="updateGcm" parameterType="com.skhu.model.Gcm">
+		update sk_gcm_db
+		set token_id = #{tokenId}, 
+			push_yn = #{pushYn}
+		where mac = #{mac} 
+	</update>
+
+	<delete id="deleteGcm">
+		delete from sk_gcm_db
+		where mac = #{mac}
+	</delete>
+	
+	<select id="getGcm" resultType="com.skhu.model.Gcm">
+		select gcm_no, mac, token_id tokenId, push_yn pushYn, created, modified
+		from sk_gcm_db
+		where mac = #{mac}
+	</select>
+</mapper>

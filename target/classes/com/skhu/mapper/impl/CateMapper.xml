@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.skhu.mapper.CateMapper">
+	<insert id="insertCategory" useGeneratedKeys="true" keyProperty="cateNo" keyColumn="cate_no" parameterType="com.skhu.model.Category">
+		insert into sk_category_db (depth, name, parent_cate_no, db_type)
+		values (#{depth}, #{name}, #{parentCateNo}, #{dbType})
+	</insert>
+
+	<update id="updateCategory" parameterType="com.skhu.model.Category">
+		update sk_category_db
+		set depth = #{depth}, 
+			name = #{name},
+			modified = now()
+		where cate_no = #{cateNo} 
+	</update>
+
+	<delete id="deleteCategory">
+		delete from sk_category_db
+		where cate_no = #{cateNo} 
+	</delete>
+	
+	<select id="getCategory" resultType="com.skhu.model.Category">
+		select cate_no cateNo, cate_id cateId, depth, name, parent_cate_no parentCateNo, db_type dbType, created, modified
+		from sk_category_db
+		where cate_no = #{cateNo}
+	</select>
+	
+	<select id="getCategories" resultType="com.skhu.model.Category">
+		select cate_no cateNo, cate_id cateId, depth, name, parent_cate_no parentCateNo, db_type dbType, created, modified
+		from sk_category_db
+		order by cate_no asc
+	</select>
+	
+	<select id="getCategoriesByParentNo" resultType="com.skhu.model.Category">
+		select cate_no cateNo, cate_id cateId, depth, name, parent_cate_no parentCateNo, db_type dbType, created, modified
+		from sk_category_db
+		where parent_cate_no = #{parentCateNo} and db_type = #{dbType}
+		order by cate_no asc
+	</select>
+	
+	<select id="getCategoriesByDepth" resultType="com.skhu.model.Category">
+		select cate_no cateNo, cate_id cateId, depth, name, parent_cate_no parentCateNo, db_type dbType, created, modified
+		from sk_category_db
+		where depth = #{depth} and db_type = #{dbType}
+		order by cate_no asc
+	</select>
+</mapper>

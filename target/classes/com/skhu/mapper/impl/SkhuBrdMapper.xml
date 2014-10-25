@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.skhu.mapper.SkhuBrdMapper">
+	<insert id="insertSkhuBrd" useGeneratedKeys="true" keyProperty="skhuNo" keyColumn="skhu_no" parameterType="com.skhu.model.SkhuArticle">
+		insert into sk_skhu_board_db (brd_no, name, id, subject, url, content, cate_no, img, attach, comment_cnt, created)
+		values (#{brdNo}, #{name}, #{id}, #{subject}, #{url}, #{content}, #{cateNo}, #{img}, #{attach}, #{commentCnt}, #{created})
+	</insert>
+	
+	<insert id="insertQnABrd" useGeneratedKeys="true" keyProperty="skhuNo" keyColumn="skhu_no" parameterType="com.skhu.model.SkhuArticle">
+		insert into sk_skhu_qna_db (brd_no, name, id, subject, url, content, cate_no, img, attach, comment_cnt, created, reply_state)
+		values (#{brdNo}, #{name}, #{id}, #{subject}, #{url}, #{content}, #{cateNo}, #{img}, #{attach}, #{commentCnt}, #{created}, #{replyState})
+	</insert>
+	
+	<update id="updateSkhuBrd" parameterType="com.skhu.model.SkhuArticle">
+		update sk_skhu_board_db
+		set name = #{name}, 
+			id = #{id},
+			subject = #{subject},
+			url = #{url},
+			content = #{content},
+			cate_no = #{cateNo},
+			img = #{img},
+			attach = #{attach},
+			comment_cnt = #{commentCnt},
+			created = #{created}
+		where brd_no = #{brdNo} and cate_no = #{cateNo}
+	</update>
+
+	<update id="updateQnABrd" parameterType="com.skhu.model.SkhuArticle">
+		update sk_skhu_qna_db
+		set name = #{name}, 
+			id = #{id},
+			subject = #{subject},
+			url = #{url},
+			content = #{content},
+			cate_no = #{cateNo},
+			img = #{img},
+			attach = #{attach},
+			comment_cnt = #{commentCnt},
+			created = #{created},
+			reply_state = #{replyState}
+		where brd_no = #{brdNo} and cate_no = #{cateNo}
+	</update>	
+
+	<delete id="deleteSkhuBrd">
+		delete from sk_skhu_board_db
+		where (#{sBrdNo} &lt; brd_no and brd_no &lt; #{lBrdNo}) and cate_no = #{cateNo}
+	</delete>
+	
+	<delete id="deleteQnABrd">
+		delete from sk_skhu_qna_db
+		where (#{sBrdNo} &lt; brd_no and brd_no &lt; #{lBrdNo}) and cate_no = #{cateNo}
+	</delete>
+	
+	<select id="getSkhuBrds" resultType="com.skhu.model.SkhuArticle">
+		select brd_no brdNo, sk.name "name", ct.name cateNm, id, subject, url, content, sk.cate_no cateNo, img, attach, comment_cnt commentCnt, sk.created created
+		from sk_skhu_board_db sk join sk_category_db ct
+		on sk.cate_no = ct.cate_no
+		where sk.cate_no in 
+		<foreach item="cateNo" index="index" collection="cates" open="(" close=")" separator=",">
+		 	#{cateNo}
+		</foreach>
+		order by created desc, brd_no desc
+		limit #{pageNum} offset #{startNum} 
+	</select>
+	
+	<select id="getQnABrds" resultType="com.skhu.model.SkhuArticle">
+		select brd_no brdNo, sk.name "name", ct.name cateNm, id, subject, url, content, sk.cate_no cateNo, img, attach, comment_cnt commentCnt, sk.created created, reply_state replyState 
+		from sk_skhu_qna_db sk join sk_category_db ct
+		on sk.cate_no = ct.cate_no
+		where sk.cate_no in 
+		<foreach item="cateNo" index="index" collection="cates" open="(" close=")" separator=",">
+		 	#{cateNo}
+		</foreach>
+		order by created desc, brd_no desc
+		limit #{pageNum} offset #{startNum} 
+	</select>
+	
+	<select id="getSkhuBrd" resultType="com.skhu.model.SkhuArticle">
+		select brd_no brdNo, sk.name "name", ct.name cateNm, id, subject, url, content, sk.cate_no cateNo, img, attach, comment_cnt, sk.created created
+		from sk_skhu_board_db sk join sk_category_db ct
+		on sk.cate_no = ct.cate_no
+		where sk.brd_no = #{brdNo} and sk.cate_no = #{cateNo}
+	</select>
+	
+	<select id="getQnABrd" resultType="com.skhu.model.SkhuArticle">
+		select brd_no brdNo, sk.name "name", ct.name cateNm, id, subject, url, content, sk.cate_no cateNo, img, attach, comment_cnt, sk.created created, reply_state replyState
+		from sk_skhu_qna_db sk join sk_category_db ct
+		on sk.cate_no = ct.cate_no
+		where sk.brd_no = #{brdNo} and sk.cate_no = #{cateNo}
+	</select>
+	
+	<select id="getSkhuBrdsByFilter" resultType="com.skhu.model.SkhuArticle">
+		select brd_no brdNo, sk.name "name", ct.name cateNm, id, subject, url, content, sk.cate_no cateNo, img, attach, comment_cnt, sk.created created
+		from sk_skhu_board_db sk join sk_category_db ct
+		on sk.cate_no = ct.cate_no		
+		where sk.cate_no = #{cateNo} 
+		and subject like concat('%', #{filter}, '%')
+		<!-- <foreach item="cateNo" index="index" collection="cates" open="('%'," close=",'%')" separator=",'%',">
+		 	#{filters}
+		</foreach>  -->
+	</select>
+</mapper>
