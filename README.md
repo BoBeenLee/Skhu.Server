@@ -1,13 +1,5 @@
 # 성공회알리미 서버
 
-+ Android
-  + Android Pull To Refresh
-  + Android ViewPagerIndicator
-  + HTTP ( Android-Async-Http )
-  + Image Processor ( Picasso )
-  + Facebook Graph API
-  + Json ( Gson )
-  + Time ( Joda Time ), GCM 
 + Server
   + Spring Framework
   + MyBatis
