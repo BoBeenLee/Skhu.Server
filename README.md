@@ -1,6 +1,6 @@
 # 성공회대 알리미 서버
 
-+ Android - 
++ Android
   + Android Pull To Refresh
   + Android ViewPagerIndicator
   + HTTP ( Android-Async-Http )
@@ -8,7 +8,6 @@
   + Facebook Graph API
   + Json ( Gson )
   + Time ( Joda Time ), GCM 
-
 + Server
   + Spring Framework
   + MyBatis
@@ -17,5 +16,4 @@
   + Multi Thread ( Quartz Framework )
   + Time ( Joda Time )
   + Test ( JUnit ), GCM Server 
-
 + DB - MariaDB
