@@ -1,4 +1,4 @@
-# 성공회대 알리미 서버
+# 성공회알리미 서버
 
 + Android
   + Android Pull To Refresh
